@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 
+import { createSession } from "../../services/api";
+
 import "./style.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    console.log(email, password);
-
-    setEmail("");
-    setPassword("");
+  const handleLogin = async () => {
+    const response = await createSession(email, password);
+    console.log(response.data)
   };
 
   return (
@@ -27,7 +25,7 @@ const Login = () => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          />  
+          />
         </div>
 
         <div className="field">

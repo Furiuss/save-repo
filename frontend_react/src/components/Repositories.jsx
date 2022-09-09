@@ -3,18 +3,27 @@ import React, { useState } from "react";
 const Repositories = ({ repositories, onDeleteRepo, onNewRepo }) => {
   const [newRepo, setNewRepo] = useState("");
 
+  const addAndCleanRepository = () => {
+    if (!newRepo) return;
+
+    onNewRepo(newRepo);
+    setNewRepo("");
+  }
+
   return (
     <div className="repositories">
       <h2 className="title">Repositórios</h2>
 
       <ul className="list">
-        <li className="item">
-          <div className="info">
-            <div className="owner">Facebook</div>
-            <div className="name">react</div>
-          </div>
-          <button onClick={onDeleteRepo}>Apagar</button>
-        </li>
+        {repositories.map((repo) => (
+          <li className="item" key={repo._id}>
+            <div className="info">
+              <div className="owner">{repo.name.split('/')[0]}</div>
+              <div className="name">{repo.name.split('/')[1]}</div>
+            </div>
+            <button onClick={() => onDeleteRepo(repo)}>Apagar</button>
+          </li>
+        ))}
       </ul>
 
       <div className="new">
@@ -26,7 +35,7 @@ const Repositories = ({ repositories, onDeleteRepo, onNewRepo }) => {
           value={newRepo}
           onChange={(e) => setNewRepo(e.target.value)}
         />
-        <button onClick={() => onNewRepo(null)}>Adicionar</button>
+        <button onClick={addAndCleanRepository}>Adicionar</button>
       </div>
     </div>
   );
