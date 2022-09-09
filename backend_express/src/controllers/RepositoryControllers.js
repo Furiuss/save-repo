@@ -5,12 +5,23 @@ class RepositoriesController {
   async index(req, res) {
     try {
       const { user_id } = req.params;
+      const { q } = req.query;
+
       const user = await User.findById(user_id);
 
       if (!user) return res.status(404).json({ error: "User not found" });
 
+      let query = {};
+
+      if (q) {
+        query = {url: {
+          $regex: q
+        }};
+      }
+
       const repositories = await Repository.find({
         userId: user_id,
+        ...query
       });
 
       return res.json(repositories);
@@ -58,18 +69,18 @@ class RepositoriesController {
       const { user_id, id } = req.params;
       const user = await User.findById(user_id);
 
-      if (!user) return res.status(404).json({ error: "User not found"})
-      
+      if (!user) return res.status(404).json({ error: "User not found" });
+
       const repository = await Repository.findOne({
         userId: user.id,
         id,
-      })
+      });
 
-      if (!repository) return res.status(404).json({ error: "Repo not found"})
-      
-      await repository.deleteOne()
+      if (!repository) return res.status(404).json({ error: "Repo not found" });
 
-      return res.status(204).json({sucessful: 'Repo deleted successfully'})
+      await repository.deleteOne();
+
+      return res.status(204).json({ sucessful: "Repo deleted successfully" });
     } catch (err) {
       console.error(err);
       return res.status(404).json({ error: "Internal server error" });
