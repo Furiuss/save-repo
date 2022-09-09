@@ -4,7 +4,7 @@ import userController from "../controllers/UsersControllers";
 
 const router = new Router();
 
-router.use(auth)
+// router.use(auth)
 
 router.get("/", userController.index);
 router.get("/:id", userController.show);

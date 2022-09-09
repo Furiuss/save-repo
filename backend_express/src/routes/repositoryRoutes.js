@@ -5,6 +5,6 @@ const router = new Router();
 
 router.get("/:user_id/repositories", repositoriesController.index);
 router.post("/:user_id/repositories", repositoriesController.create);
-router.delete("/:user_id/repositories", repositoriesController.destroy);
+router.delete("/:user_id/repositories/:id", repositoriesController.destroy);
 
 export default router;
